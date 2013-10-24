@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='daterangestr',
-      version='0.0.1',
+      version='0.0.2',
       description='Utility to convert strings like "201301-201302" to start and end datetime tuples',
       author='Marian Steinbach',
       author_email='marian@sendung.de',

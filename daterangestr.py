@@ -80,6 +80,13 @@ def expand_date_param(param, lower_upper):
     year = 0
     month = 0
     day = 0
+    hour = 0
+    minute = 0
+    second = 0
+    if lower_upper == 'upper':
+        hour = 23
+        minute = 59
+        second = 59
     if len(param) == 0:
         if lower_upper == 'lower':
             year = datetime.MINYEAR
@@ -111,13 +118,14 @@ def expand_date_param(param, lower_upper):
         day = int(param[6:8])
     else:
         # wrong input length
-        return None
+        raise ValueError('Bad date string provided. Use YYYY, YYYYMM or YYYYMMDD.')
     # force numbers into valid ranges
     year = min(datetime.MAXYEAR, max(datetime.MINYEAR, year))
     month = min(12, max(1, month))
     (firstday, dayspermonth) = monthrange(year, month)
     day = min(dayspermonth, max(1, day))
-    return datetime.date(year=year, month=month, day=day)
+    return datetime.datetime(year=year, month=month, day=day,
+        hour=hour, minute=minute, second=second)
 
 
 def test():
