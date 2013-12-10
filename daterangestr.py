@@ -69,41 +69,44 @@ def expand_date_param(param, lower_upper):
     """
     Expands a (possibly) incomplete date string to either the lowest
     or highest possible contained date and returns
-    datetime.date for that string.
+    datetime.datetime for that string.
 
-    0753 (lowest) => 0753-01-01
-    2012 (highest) => 2012-12-31
-    2012 (lowest) => 2012-01-01
-    201208 (highest) => 2012-08-31
+    0753 (lower) => 0753-01-01
+    2012 (upper) => 2012-12-31
+    2012 (lower) => 2012-01-01
+    201208 (upper) => 2012-08-31
     etc.
     """
-    year = 0
-    month = 0
-    day = 0
+    year = datetime.MINYEAR
+    month = 1
+    day = 1
     hour = 0
     minute = 0
     second = 0
     if lower_upper == 'upper':
+        year = datetime.MAXYEAR
+        month = 12
+        day = 31
         hour = 23
         minute = 59
         second = 59
     if len(param) == 0:
-        if lower_upper == 'lower':
-            year = datetime.MINYEAR
-            month = 1
-            day = 1
-        else:
-            year = datetime.MAXYEAR
-            month = 12
-            day = 31
+        # leave defaults
+        pass
     elif len(param) == 4:
         year = int(param)
         if lower_upper == 'lower':
             month = 1
             day = 1
+            hour = 0
+            minute = 0
+            second = 0
         else:
             month = 12
             day = 31
+            hour = 23
+            minute = 59
+            second = 59
     elif len(param) == 6:
         year = int(param[0:4])
         month = int(param[4:6])
@@ -116,13 +119,29 @@ def expand_date_param(param, lower_upper):
         year = int(param[0:4])
         month = int(param[4:6])
         day = int(param[6:8])
+    elif len(param) == 10:
+        year = int(param[0:4])
+        month = int(param[4:6])
+        day = int(param[6:8])
+        hour = int(param[8:10])
+    elif len(param) == 12:
+        year = int(param[0:4])
+        month = int(param[4:6])
+        day = int(param[6:8])
+        hour = int(param[8:10])
+        minute = int(param[10:12])
+    elif len(param) == 14:
+        year = int(param[0:4])
+        month = int(param[4:6])
+        day = int(param[6:8])
+        hour = int(param[8:10])
+        minute = int(param[10:12])
+        second = int(param[12:14])
     else:
         # wrong input length
         raise ValueError('Bad date string provided. Use YYYY, YYYYMM or YYYYMMDD.')
     # force numbers into valid ranges
+    #print (param, lower_upper), [year, month, day, hour, minute, second]
     year = min(datetime.MAXYEAR, max(datetime.MINYEAR, year))
-    month = min(12, max(1, month))
-    (firstday, dayspermonth) = monthrange(year, month)
-    day = min(dayspermonth, max(1, day))
     return datetime.datetime(year=year, month=month, day=day,
         hour=hour, minute=minute, second=second)

@@ -9,7 +9,7 @@ except (IOError, ImportError):
     description = ''
 
 setup(name='daterangestr',
-      version='0.0.2',
+      version='0.0.3',
       description='Utility to convert strings like "201301-201302" to start and end datetime tuples',
       long_description=description,
       author='Marian Steinbach',
