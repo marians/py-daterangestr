@@ -126,29 +126,3 @@ def expand_date_param(param, lower_upper):
     day = min(dayspermonth, max(1, day))
     return datetime.datetime(year=year, month=month, day=day,
         hour=hour, minute=minute, second=second)
-
-
-def test():
-    print "Running tests:"
-    print to_dates('2012')
-    print to_dates('201201')
-    print to_dates('20121001')
-    print to_dates('2011-2011')
-    print to_dates('2011-2012')
-    print to_dates('201104-2012')
-    print to_dates('201104-201203')
-    print to_dates('20110408-2011')
-    print to_dates('2011-')
-    print to_dates('201104-')
-    print to_dates('20110408-')
-    print to_dates('-2011')
-    print to_dates('-201104')
-    print to_dates('-20110408')
-    print to_dates('200902')
-    print to_dates('201002')
-    print to_dates('201102')
-    print to_dates('201202')
-    print to_dates('201302')
-
-if __name__ == '__main__':
-    test()
